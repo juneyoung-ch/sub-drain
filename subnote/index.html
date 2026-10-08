@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#39715a"><title>subnote — 구독 생활을 가볍게</title><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"></head>
+<body>
+<aside class="sidebar"><a class="brand" href="./"><span class="brand-mark">s<span>•</span></span>subnote<span class="brand-dot">.</span></a><div class="workspace"><span class="avatar">나</span><div><b>나의 구독 공간</b><small>Personal workspace</small></div><span class="workspace-arrow">⌄</span></div><p class="nav-label">WORKSPACE</p><nav id="navigation"></nav><div class="sidebar-bottom"><div class="little-plant">✳</div><b>구독은 필요한 만큼만.</b><p>작은 정리로 시작하는<br>가벼운 구독 생활</p><span>MADE FOR YOUR EVERYDAY</span></div><button class="profile" id="export"><span class="avatar">↓</span><div><b>내 데이터 내보내기</b><small>안전하게 백업해 두세요</small></div></button></aside>
+<div class="main-wrap"><header class="topbar"><div><span class="breadcrumb">나의 구독 공간</span><span class="slash">/</span><span id="page-label">대시보드</span></div><span class="local-badge"><i></i> 이 기기에 저장 중</span></header><main><section class="page-heading"><div><div class="eyebrow">LESS CLUTTER, MORE CLARITY</div><h1 id="heading">나의 구독 한눈에</h1><p id="subtitle">흩어져 있던 구독, 이제 한곳에서 가볍게 관리하세요.</p></div><button class="primary" id="add-top">＋ 구독 추가하기</button></section><div class="month-line"><div class="month-picker"><button id="prev" aria-label="이전 달">‹</button><b id="month"></b><button id="next" aria-label="다음 달">›</button><button id="today">이번 달</button></div><span class="sample-label" id="sample-label">샘플 데이터로 둘러보는 중 <button id="clear-demo">새로 시작하기 ↗</button></span></div><div id="content"></div><footer><span><i class="footer-dot"></i> 나의 구독에 집중하는 가장 간단한 방법</span><span>subnote © 2026</span></footer></main></div>
+<dialog id="editor" aria-labelledby="dialog-title">
+  <form id="sub-form">
+    <div class="dialog-head"><div><small>MY SUBSCRIPTION</small><h2 id="dialog-title">새 구독 추가</h2><p>상품을 고르고, 이용 중인 혜택을 담아보세요.</p></div><button type="button" class="close" id="close" aria-label="닫기">×</button></div>
+    <div id="product-picker" class="product-picker" aria-label="구독 상품 선택"></div>
+    <label>서비스 이름<input name="name" required maxlength="40" placeholder="예: Netflix"></label>
+    <section id="plan-options" class="plan-options" hidden></section>
+    <section id="bundle-options" class="bundle-options" aria-label="묶음 상품 혜택 선택" hidden></section>
+    <div class="form-row"><label>전체 결제 금액 (원)<input name="amount" required type="number" min="1" max="100000000" step="1" placeholder="실제 결제액 입력"></label><label>결제 주기<select name="cycle"><option value="monthly">매월</option><option value="yearly">매년</option></select></label></div>
+    <div id="bundle-summary" class="bundle-summary" aria-live="polite" hidden></div>
+    <div class="form-row"><label>첫 결제일<input name="start" type="date" required></label><label>카테고리<select name="category"><option>엔터테인먼트</option><option>음악</option><option>생산성</option><option>클라우드</option><option>쇼핑</option><option>기타</option></select></label></div>
+    <label>결제 수단<input name="card" maxlength="40" required placeholder="예: 현대카드 · 1234 (별칭만 입력)"></label>
+    <label>메모<input name="memo" maxlength="120" placeholder="할인이나 기억할 내용을 적어두세요"></label>
+    <p class="form-note">카드 번호 전체나 보안 코드는 입력하지 마세요.</p>
+    <div class="dialog-actions"><button type="button" id="delete" class="danger" hidden>구독 삭제</button><button type="submit" class="primary">저장하기</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div><script src="bundles.js"></script><script src="catalog.js"></script><script src="app.js"></script><script src="bundle-editor.js"></script><script src="plan-editor.js"></script></body></html>
