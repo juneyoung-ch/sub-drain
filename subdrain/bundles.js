@@ -77,3 +77,27 @@ function duplicateBenefits(bundle, subs, editingId) {
   }
   return [...new Set(matches)];
 }
+
+// Finds services paid for twice: a benefit bundled into one subscription that is also subscribed to on its own
+// (or bundled into a second subscription). Never changes data; callers only display the result.
+function findOverlaps(subs, today = dateKey(now)) {
+  const normalize = text => String(text).toLowerCase().replace(/\s/g,'');
+  const matches = (aliases, name) => (aliases || []).some(alias => normalize(name).includes(normalize(alias)));
+  const found = new Map();
+  for (const owner of subs) {
+    for (const b of owner.bundle?.benefits || []) {
+      if (!b.aliases?.length || (b.end && b.end <= today)) continue;
+      for (const other of subs) {
+        if (other.id === owner.id) continue;
+        const standalone = matches(b.aliases, other.name);
+        const inOtherBundle = !standalone && (other.bundle?.benefits || []).some(ob => matches(b.aliases, ob.name) && !(ob.end && ob.end <= today));
+        if (!standalone && !inOtherBundle) continue;
+        const key = standalone ? `${owner.id}:${b.id}:${other.id}` : `bundle:${b.id}:${[owner.id, other.id].sort().join(':')}`;
+        if (found.has(key)) continue;
+        const monthly = standalone ? (other.cycle === 'yearly' ? Math.round(other.amount / 12) : other.amount) : 0;
+        found.set(key, {key, kind: standalone ? 'standalone' : 'bundle', benefit: b.name, ownerId: owner.id, ownerName: owner.name, otherId: other.id, otherName: other.name, monthly, yearly: standalone ? (other.cycle === 'yearly' ? other.amount : other.amount * 12) : 0});
+      }
+    }
+  }
+  return [...found.values()];
+}
