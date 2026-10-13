@@ -1,10 +1,10 @@
-# subnote
+# subdrain
 
 구독 서비스, 결제 일정, 결제 수단별 예상 지출을 관리하는 한국어 반응형 웹앱입니다. 기존 가사 타이머와 별도 폴더 및 저장 키를 사용합니다.
 
 ## 실행
 
-`index.html`을 브라우저에서 열거나, 프로젝트 루트에서 `node subnote/server.cjs`를 실행하고 `http://localhost:4173`에 접속합니다. 별도 의존성이나 빌드가 없습니다.
+`index.html`을 브라우저에서 열거나, 프로젝트 루트에서 `node subdrain/server.cjs`를 실행하고 `http://localhost:4173`에 접속합니다. 별도 의존성이나 빌드가 없습니다.
 
 ## 기능
 
@@ -35,7 +35,7 @@
 - https://support.google.com/youtube/answer/9927383?hl=ko
 - https://gemini.google/kr/subscriptions/
 
-검증: `node subnote/test.cjs` (월말·윤년·연간 주기, 선택 제약, 무료 기간, 중복 안내, 부모 금액만 합산, 직렬화)
+검증: `node subdrain/test.cjs` (월말·윤년·연간 주기, 선택 제약, 무료 기간, 중복 안내, 부모 금액만 합산, 직렬화)
 
 ## 다음 확장 계획
 

@@ -1,5 +1,5 @@
 const $ = (s) => document.querySelector(s);
-const KEY = 'subnote-v1';
+const KEY = 'subdrain-v1';
 const now = new Date();
 let month = new Date(now.getFullYear(), now.getMonth(), 1), view = 'dashboard', filter = '전체', query = '', editing = null;
 const icons = {dashboard:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',subscriptions:'<rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 2v6m8-6v6M8 12h8m-8 4h5"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2"/>',cards:'<rect x="2" y="5" width="20" height="15" rx="3"/><path d="M2 10h20M6 15h4"/>',wallet:'<path d="M20 8H5a2 2 0 0 1 0-4h13v4M4 6v13h16V8m0 4h-5v4h5"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};
@@ -12,7 +12,7 @@ function makeDemo(){return {demo:true,subs:[
  ['Netflix',17000,5,'엔터테인먼트','현대카드 · 4821','프리미엄'],['Spotify',10900,8,'음악','현대카드 · 4821','개인 프리미엄'],['YouTube Premium',14900,12,'엔터테인먼트','신한카드 · 9032','개인 멤버십'],['iCloud+',3300,18,'클라우드','현대카드 · 4821','200GB'],['Notion',12000,22,'생산성','신한카드 · 9032','Plus 요금제'],['Figma',22000,27,'생산성','현대카드 · 4821','Professional']
  ].map((s,i)=>({id:crypto.randomUUID(),name:s[0],amount:s[1],start:`2026-01-${String(s[2]).padStart(2,'0')}`,category:s[3],card:s[4],memo:s[5],cycle:'monthly'}))};}
 let data;
-try {data=JSON.parse(localStorage.getItem(KEY)) || makeDemo();if(!Array.isArray(data.subs))throw Error('Invalid data');}catch{data=makeDemo();}
+try {data=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('subnote-v1')) || makeDemo();if(!Array.isArray(data.subs))throw Error('Invalid data');}catch{data=makeDemo();}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));return true;}catch{toast('저장 공간이 부족합니다. 데이터를 내보내 주세요.');return false;}}
 function toast(text){$('#toast').textContent=text;$('#toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').classList.remove('show'),3000);}
 function dueDate(sub, target){const [y,m,d]=sub.start.split('-').map(Number);const startMonth=y*12+m-1;const targetMonth=target.getFullYear()*12+target.getMonth();if(targetMonth<startMonth || (sub.cycle==='yearly' && target.getMonth()!==m-1))return null;return new Date(target.getFullYear(),target.getMonth(),Math.min(d,new Date(target.getFullYear(),target.getMonth()+1,0).getDate()));}
@@ -40,6 +40,6 @@ $('#prev').onclick=()=>{month=new Date(month.getFullYear(),month.getMonth()-1,1)
 $('#sub-form').onsubmit=e=>{e.preventDefault();const fields=Object.fromEntries(new FormData(e.target));for(const key of Object.keys(fields))if(key.startsWith('bundle-')||key.startsWith('catalog-'))delete fields[key];fields.name=fields.name.trim();fields.card=fields.card.trim();fields.amount=Number(fields.amount);if(!fields.name||!fields.card||!Number.isSafeInteger(fields.amount)||fields.amount<1||fields.amount>100000000){toast('서비스 이름, 결제 금액, 결제 수단을 확인해 주세요.');return;}const previous=JSON.stringify(data);const bundle=readBundleEditor(),plan=readPlanEditor();const sub={...fields,id:editing||crypto.randomUUID(),...(bundle?{bundle}:{}),...(plan?{plan}:{})};if(editing)data.subs=data.subs.map(s=>s.id===editing?sub:s);else data.subs.push(sub);if(!persist()){data=JSON.parse(previous);return;}$('#editor').close();render();toast('구독 정보를 저장했어요.');};
 $('#delete').onclick=()=>{if(!confirm('이 구독을 삭제할까요?'))return;const previous=JSON.stringify(data);data.subs=data.subs.filter(s=>s.id!==editing);if(!persist()){data=JSON.parse(previous);return;}$('#editor').close();render();toast('구독을 삭제했어요.');};
 $('#clear-demo').onclick=()=>{if(!confirm('현재 목록을 비우고 새로 시작할까요? 직접 추가한 구독도 함께 삭제됩니다.'))return;const previous=data;data={demo:false,subs:[]};if(!persist()){data=previous;return;}render();toast('나만의 구독을 추가해 보세요.');};
-$('#export').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`subnote-${dateKey(now)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('구독 데이터를 내보냈어요.');};
+$('#export').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`subdrain-${dateKey(now)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('구독 데이터를 내보냈어요.');};
 render();
 if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});

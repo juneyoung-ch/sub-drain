@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "subdrain",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["subdrain/server.cjs"],
+      "port": 4173
+    }
+  ]
+}
